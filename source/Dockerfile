@@ -1,0 +1,43 @@
+# Want to use slim, but ran into issues...
+FROM mono:6.8
+LABEL Author=JoshuaMiller
+
+EXPOSE 7777
+
+# https://github.com/Pryaxis/TShock/releases
+ARG SERVER_DOWNLOAD_PATH=https://www.terraria.org/system/dedicated_servers/archives/000/000/041/original/
+ARG ZIP_NAME=terraria-server-1411
+
+ARG TERRARIA_USER_UID=8433
+ARG TERRARIA_USER_NAME=terraria
+
+COPY start.sh /usr/local/bin/ 
+
+ADD $SERVER_DOWNLOAD_PATH/$ZIP_NAME.zip /
+
+# Ahhh there is a linux version, so this may be able to be rewritten to use a very small linux image 🤔
+# ./thezip/1411/Linux/Terraria.exe
+
+# jq --> for finding/replacing json value easily
+# moreutils --> to leverage sponge, which makes outputing a file from the jq step easier
+RUN apt-get update && \
+    apt-get install -y jq moreutils unzip --no-install-recommends && \    
+    unzip $ZIP_NAME.zip -d /ter && \
+    rm $ZIP_NAME.zip && \
+    useradd -u $TERRARIA_USER_UID $TERRARIA_USER_NAME && \
+    chown -R $TERRARIA_USER_NAME ter/ && chmod 700 /ter/TerrariaServer.exe && chmod -R u+rw ter/ && \    
+    chown -R $TERRARIA_USER_NAME world && chmod -R 700 world && \                      
+    mkdir -p /home/terraria/ && chown -R $TERRARIA_USER_NAME /home/terraria/ && \
+    chown $TERRARIA_USER_NAME /usr/local/bin/start.sh && chmod 500 /usr/local/bin/start.sh
+
+# Allow for external data
+VOLUME ["/world"]
+
+# Set working directory to server
+WORKDIR /ter
+
+USER terraria
+
+# run the start script, which will set the password if provided and then run Terraria
+ENTRYPOINT ["start.sh"]
+CMD ["-autocreate", "1", "-world", "/world/Terrarium.wld"]
