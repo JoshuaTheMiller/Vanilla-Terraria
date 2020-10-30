@@ -22,8 +22,12 @@ ADD $SERVER_DOWNLOAD_PATH/$ZIP_NAME.zip /
 # moreutils --> to leverage sponge, which makes outputing a file from the jq step easier
 RUN apt-get update && \
     apt-get install -y jq moreutils unzip --no-install-recommends && \    
-    unzip $ZIP_NAME.zip -d /ter && \
+    unzip $ZIP_NAME.zip -d /staging && \
+    mkdir ter && \
+    mkdir world && \
+    cp -r staging/$(ls staging)/Linux/* ter && \
     rm $ZIP_NAME.zip && \
+    rm -r /staging && \
     useradd -u $TERRARIA_USER_UID $TERRARIA_USER_NAME && \
     chown -R $TERRARIA_USER_NAME ter/ && chmod 700 /ter/TerrariaServer.exe && chmod -R u+rw ter/ && \    
     chown -R $TERRARIA_USER_NAME world && chmod -R 700 world && \                      
@@ -38,6 +42,6 @@ WORKDIR /ter
 
 USER terraria
 
-# run the start script, which will set the password if provided and then run Terraria
+# # # run the start script, which will set the password if provided and then run Terraria
 ENTRYPOINT ["start.sh"]
 CMD ["-autocreate", "1", "-world", "/world/Terrarium.wld"]
