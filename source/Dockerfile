@@ -23,14 +23,14 @@ ADD $SERVER_DOWNLOAD_PATH/$ZIP_NAME.zip /
 RUN apt-get update && \
     apt-get install -y jq moreutils unzip --no-install-recommends && \    
     unzip $ZIP_NAME.zip -d /staging && \
-    mkdir ter && \
-    mkdir world && \
-    cp -r staging/$(ls staging)/Linux/* ter && \
+    mkdir /ter && \
+    mkdir /world && \
+    cp -r staging/$(ls staging)/Linux/* /ter && \
     rm $ZIP_NAME.zip && \
     rm -r /staging && \
     useradd -u $TERRARIA_USER_UID $TERRARIA_USER_NAME && \
-    chown -R $TERRARIA_USER_NAME ter/ && chmod 700 /ter/TerrariaServer.exe && chmod -R u+rw ter/ && \    
-    chown -R $TERRARIA_USER_NAME world && chmod -R 700 world && \                      
+    chown -R $TERRARIA_USER_NAME /ter/ && chmod 700 /ter/TerrariaServer.exe && chmod -R u+rw /ter/ && \    
+    chown -R $TERRARIA_USER_NAME /world && chmod -R 700 /world && \                      
     mkdir -p /home/terraria/ && chown -R $TERRARIA_USER_NAME /home/terraria/ && \
     chown $TERRARIA_USER_NAME /usr/local/bin/start.sh && chmod 500 /usr/local/bin/start.sh
 
