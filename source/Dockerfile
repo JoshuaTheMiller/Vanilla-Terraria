@@ -15,9 +15,6 @@ COPY start.sh /usr/local/bin/
 
 ADD $SERVER_DOWNLOAD_PATH/$ZIP_NAME.zip /
 
-# Ahhh there is a linux version, so this may be able to be rewritten to use a very small linux image 🤔
-# ./thezip/1411/Linux/Terraria.exe
-
 # jq --> for finding/replacing json value easily
 # moreutils --> to leverage sponge, which makes outputing a file from the jq step easier
 RUN apt-get update && \
