@@ -1,10 +1,11 @@
 # Want to use slim, but ran into issues...
 FROM mono:6.8
-LABEL Author=JoshuaMiller
+LABEL org.opencontainers.image.authors https://github.com/JoshuaTheMiller
+LABEL org.opencontainers.image.title Vanilla-Terraria
+LABEL org.opencontainers.image.source https://github.com/JoshuaTheMiller/Vanilla-Terraria
 
 EXPOSE 7777
 
-# https://github.com/Pryaxis/TShock/releases
 ARG SERVER_DOWNLOAD_PATH=https://www.terraria.org/system/dedicated_servers/archives/000/000/041/original/
 ARG ZIP_NAME=terraria-server-1411
 
@@ -39,6 +40,6 @@ WORKDIR /ter
 
 USER terraria
 
-# # # run the start script, which will set the password if provided and then run Terraria
+# run the start script, which will set the password if provided and then run Terraria
 ENTRYPOINT ["start.sh"]
 CMD ["-autocreate", "1", "-world", "/world/Terrarium.wld"]
