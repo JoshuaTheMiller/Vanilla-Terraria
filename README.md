@@ -2,7 +2,7 @@
 
 # Containerized *Vanilla* Terraria Server
 
-A vanilla Terraria server image! For TShock, check out the following: https://github.com/JoshuaTheMiller/Terraria
+A vanilla Terraria server image! For **TShock**, check out the following: | [GitHub](https://github.com/JoshuaTheMiller/Terraria) | [Docker][tShockDockerHub] |
 
 [![Discord](https://img.shields.io/discord/768637103402909716?label=Discord&style=flat-square)](https://discordapp.com/widget?id=768637103402909716&theme=dark) [![MediumLink](https://img.shields.io/badge/Read%20about%20me%20on%20-Medium-lightgrey?style=flat-square)][medium] [![MIT License](https://img.shields.io/dub/l/vibe-d.svg?style=flat-square)](https://github.com/JoshuaTheMiller/vanilla-terraria) 
 
@@ -47,4 +47,5 @@ Next, go through the prompts as it asks (make note of the name of your world).
 Finally, after the server starts, exit by pressing `Ctrl+p` followed immediately by `Ctrl+q`. This will cause the container to switch to daemon mode, which will allow it to keep running in the background.
 
 [dockerHub]: https://hub.docker.com/repository/docker/trfc/vanilla-terraria
+[tShockDockerHub]: https://hub.docker.com/repository/docker/trfc/terraria
 [medium]: https://bit.ly/MediumTerrariaServer
