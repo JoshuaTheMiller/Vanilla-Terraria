@@ -1,42 +1,46 @@
-# Want to use slim, but ran into issues...
-FROM mono:6.8
+FROM alpine:3.12 AS base
+
+ARG SERVER_DOWNLOAD_PATH=https://www.terraria.org/system/dedicated_servers/archives/000/000/041/original/
+ARG ZIP_NAME=terraria-server-1411
+
+ADD $SERVER_DOWNLOAD_PATH/$ZIP_NAME.zip /
+
+RUN mkdir /staging && \        
+    unzip $ZIP_NAME.zip -d /staging && \
+    mkdir /terraria && \    
+    cp -r staging/$(ls staging)/Linux/* /terraria
+
+# Using slim for final image
+FROM mono:6.8-slim
 LABEL org.opencontainers.image.authors https://github.com/JoshuaTheMiller
 LABEL org.opencontainers.image.title Vanilla-Terraria
 LABEL org.opencontainers.image.source https://github.com/JoshuaTheMiller/Vanilla-Terraria
 
 EXPOSE 7777
 
-ARG SERVER_DOWNLOAD_PATH=https://www.terraria.org/system/dedicated_servers/archives/000/000/041/original/
-ARG ZIP_NAME=terraria-server-1411
+COPY --from=base /terraria/ /ts/
+COPY start.sh /usr/local/bin/
 
 ARG TERRARIA_USER_UID=8433
 ARG TERRARIA_USER_NAME=terraria
 
-COPY start.sh /usr/local/bin/ 
-
-ADD $SERVER_DOWNLOAD_PATH/$ZIP_NAME.zip /
-
-# jq --> for finding/replacing json value easily
-# moreutils --> to leverage sponge, which makes outputing a file from the jq step easier
-RUN apt-get update && \
-    apt-get install -y jq moreutils unzip --no-install-recommends && \    
-    unzip $ZIP_NAME.zip -d /staging && \
-    mkdir /ter && \
-    mkdir /world && \
-    cp -r staging/$(ls staging)/Linux/* /ter && \
-    rm $ZIP_NAME.zip && \
-    rm -r /staging && \
+RUN mkdir /world && \    
+    mkdir -p /home/terraria/ && \
     useradd -u $TERRARIA_USER_UID $TERRARIA_USER_NAME && \
-    chown -R $TERRARIA_USER_NAME /ter/ && chmod 700 /ter/TerrariaServer.exe && chmod -R u+rw /ter/ && \    
-    chown -R $TERRARIA_USER_NAME /world && chmod -R 700 /world && \                      
-    mkdir -p /home/terraria/ && chown -R $TERRARIA_USER_NAME /home/terraria/ && \
-    chown $TERRARIA_USER_NAME /usr/local/bin/start.sh && chmod 500 /usr/local/bin/start.sh
+    chown -R $TERRARIA_USER_NAME /ts/ && \
+    chown -R $TERRARIA_USER_NAME /home/terraria/ && \
+    chown -R $TERRARIA_USER_NAME /world && \
+    chown    $TERRARIA_USER_NAME /usr/local/bin/start.sh && \     
+    chmod 700 /ts/TerrariaServer.exe && \
+    chmod -R u+rw /ts/ && \        
+    chmod -R 700 /world && \                                  
+    chmod 500 /usr/local/bin/start.sh
 
 # Allow for external data
 VOLUME ["/world"]
 
 # Set working directory to server
-WORKDIR /ter
+WORKDIR /ts
 
 USER terraria
 
