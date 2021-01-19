@@ -8,6 +8,8 @@ A vanilla Terraria server image! For **TShock**, check out the following: | [Git
 
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/trfc/vanilla-terraria?style=flat-square)][dockerHub] [![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/trfc/vanilla-terraria?style=flat-square)][dockerHub] ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/trfc/vanilla-terraria/latest?style=flat-square) [![Docker Pulls](https://img.shields.io/docker/pulls/trfc/vanilla-terraria?style=flat-square)][dockerHub]
 
+[![CodeFactor](https://www.codefactor.io/repository/github/joshuathemiller/vanilla-terraria/badge)](https://www.codefactor.io/repository/github/joshuathemiller/vanilla-terraria)
+
 *A containerized version of Terraria Server running on Linux, courtesy of [Mono](https://www.mono-project.com/)!*
 
 </div>
