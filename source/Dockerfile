@@ -1,7 +1,7 @@
 FROM alpine:3.12 AS base
 
-ARG SERVER_DOWNLOAD_PATH=https://www.terraria.org/system/dedicated_servers/archives/000/000/041/original/
-ARG ZIP_NAME=terraria-server-1411
+ARG SERVER_DOWNLOAD_PATH=https://terraria.org/api/download/pc-dedicated-server
+ARG ZIP_NAME=terraria-server-1423
 
 ADD $SERVER_DOWNLOAD_PATH/$ZIP_NAME.zip /
 
